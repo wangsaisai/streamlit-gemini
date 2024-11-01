@@ -43,6 +43,13 @@ streamlit run app.py
 
 3. 在浏览器中打开显示的地址（默认为 http://localhost:8501）
 
+#### 效果图:
+
+app.py展示
+![app.py展示](app-display.png)
+app2.py展示
+![app2.py展示](app2-display.png)
+
 ## 注意事项
 
 - 请确保有稳定的网络连接
