@@ -33,6 +33,9 @@ GOOGLE_API_KEY = "your-api-key"
 2. 运行应用：
 ```bash
 streamlit run app.py
+
+# reset port
+streamlit run --server.port 8080 app.py
 ```
 
 **说明**
