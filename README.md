@@ -41,7 +41,7 @@ streamlit run app.py
 > 两者功能一致，按个人喜好进行选择
 
 
-3. 在浏览器中打开显示的地址（默认为 http://localhost:8501）
+3. 在浏览器中打开显示的地址（默认为 http://localhost:8501 ）
 
 #### 效果图:
 
@@ -49,6 +49,9 @@ app.py展示
 ![app.py展示](app-display.png)
 app2.py展示
 ![app2.py展示](app2-display.png)
+
+4. 体验地址
+http://34.125.51.214:8082/ （免费，无广告，无需注册登录等）
 
 ## 注意事项
 
