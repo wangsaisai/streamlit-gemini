@@ -87,6 +87,11 @@ if user_input:
                     max_output_tokens=max_tokens,
                 )
 
+                # 构建历史消息
+                chat = model.start_chat(history=[])
+                for message in st.session_state.messages[:-1]:  # 不包含最新的用户消息
+                    chat.send_message(message["content"])
+
                 if image:
                     # 如果有图片，使用 vision 模型
                     st.image(image, caption="上传的图片", use_column_width=True)
@@ -95,12 +100,12 @@ if user_input:
                         generation_config=generation_config
                     )
                 else:
-                    # 纯文本对话
-                    response = model.generate_content(
+                    # 纯文本对话，使用chat.send_message保持上下文
+                    response = chat.send_message(
                         user_input,
                         generation_config=generation_config
                     )
-                
+
                 # response_text = response.text
                 # st.markdown(response_text)
                 # st.session_state.messages.append({"role": "assistant", "content": response_text})
