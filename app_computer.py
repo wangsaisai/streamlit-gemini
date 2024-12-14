@@ -17,8 +17,8 @@ if not GOOGLE_API_KEY:
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
-model = genai.GenerativeModel('gemini-1.5-pro-latest')
-vision_model = genai.GenerativeModel('gemini-1.5-flash-latest')
+model = genai.GenerativeModel('gemini-exp-1206')
+vision_model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
 # 初始化会话状态
 if "messages" not in st.session_state:
