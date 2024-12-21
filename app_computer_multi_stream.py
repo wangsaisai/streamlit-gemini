@@ -18,11 +18,11 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
-    "1.5-pro": "gemini-1.5-pro-latest",
-    "1.5-flash": "gemini-1.5-flash-latest",
     "2.0-exp(gemini-exp-1206)": "gemini-exp-1206",
     "2.0-flash-exp(gemini-2.0-flash-exp)": "gemini-2.0-flash-exp",
     "2.0-thinking-exp(gemini-2.0-flash-thinking-exp)": "gemini-2.0-flash-thinking-exp",
+    "1.5-pro": "gemini-1.5-pro-latest",
+    "1.5-flash": "gemini-1.5-flash-latest",
 }
 
 # 初始化会话状态
@@ -62,7 +62,7 @@ with st.sidebar:
         "最大 Token 数量",
         min_value=128,
         max_value=8192,
-        value=8192,
+        value=2048,
         help="生成文本的最大长度"
     )
 
@@ -98,19 +98,24 @@ for message in st.session_state.messages:
 def handle_streaming_response(response_iter):
     message_placeholder = st.empty()
     full_response = ""
-    for chunk in response_iter:
-        # 处理所有可能的部分
-        chunk_text = ""
-        if hasattr(chunk, 'text'):
-            chunk_text += chunk.text
-        if hasattr(chunk, 'parts'):
-            for part in chunk.parts:
-                if hasattr(part, 'text'):
-                    chunk_text += part.text
-        
-        if chunk_text:
-            full_response += chunk_text
+    
+    try:
+        for chunk in response_iter:
+            # 只处理文本内容
+            if hasattr(chunk, 'text'):
+                full_response += chunk.text
+            elif hasattr(chunk, 'parts'):
+                for part in chunk.parts:
+                    if hasattr(part, 'text'):
+                        full_response += part.text
+            
+            # 更新显示
             message_placeholder.markdown(full_response + "▌")
+    except Exception as e:
+        st.error(f"流式输出错误: {str(e)}")
+        return None
+    
+    # 最终显示（移除光标）
     message_placeholder.markdown(full_response)
     return full_response
 
@@ -170,20 +175,23 @@ if user_input:
                     for msg in st.session_state.messages[:-1]:  # 不包含最新的用户消息
                         history_messages.append({"role": msg["role"], "parts": [msg["content"]]})
                     
-                    if stream_enabled:
-                        response_text = handle_streaming_response(
-                            model.generate_content(
+                    try:
+                        if stream_enabled:
+                            response = model.generate_content(
                                 prompt_prefix + user_input,
                                 generation_config=generation_config,
                                 stream=True
                             )
-                        )
-                    else:
-                        response = model.generate_content(
-                            prompt_prefix + user_input,
-                            generation_config=generation_config
-                        )
-                        response_text = handle_normal_response(response)
+                            response_text = handle_streaming_response(response)
+                        else:
+                            response = model.generate_content(
+                                prompt_prefix + user_input,
+                                generation_config=generation_config
+                            )
+                            response_text = handle_normal_response(response)
+                    except Exception as e:
+                        st.error(f"生成响应时出错: {str(e)}")
+                        st.stop()
 
                 # 处理翻译模式
                 elif translate_enabled:
@@ -214,16 +222,16 @@ if user_input:
                 # 处理图片模式
                 else:  # image mode
                     # 检查模型是否支持图片处理
-                    try:
-                        model_info = model.list_model_capabilities()
-                        supports_vision = "IMAGE" in [task.name for task in model_info.supported_tasks]
+                    # try:
+                    #     model_info = model.list_model_capabilities()
+                    #     supports_vision = "IMAGE" in [task.name for task in model_info.supported_tasks]
                         
-                        if not supports_vision:
-                            st.warning("当前选择的模型不支持图片处理，请选择 flash 模型")
-                            st.stop()
-                    except Exception as e:
-                        st.error(f"检查模型能力时出错: {str(e)}")
-                        st.stop()
+                    #     if not supports_vision:
+                    #         st.warning("当前选择的模型不支持图片处理，请选择 flash 模型")
+                    #         st.stop()
+                    # except Exception as e:
+                    #     st.error(f"检查模型能力时出错: {str(e)}")
+                    #     st.stop()
                         
                     st.image(image, caption="上传的图片", use_column_width=True)
                     
