@@ -4,8 +4,10 @@
 
 ## 功能特点
 
-- 💬 支持自然语言对话 (使用模型：`gemini-1.5-pro-latest`)
-- 🖼️ 支持图片上传和分析 (使用模型：`gemini-1.5-flash-latest`)
+- 💬 支持自然语言对话
+- 🤖 支持多种模型选择 (`gemini-1.5`, `gemini-2.0-exp`, `gemini-2.0-thinking-exp`)
+- 📝 支持流式输出回复
+- 🖼️ 支持图片上传和分析
 - 🚀 简单易用的 Web 界面
 - 💻 基于 Streamlit 快速部署
 
@@ -48,6 +50,8 @@ streamlit run --server.port 8080 app.py
 
 #### 效果图:
 
+app_computer_multi_stream.pu展示
+![最新界面展示](app_computer_multi_stream-display.png)
 app.py展示
 ![app.py展示](app-display.png)
 app2.py展示
