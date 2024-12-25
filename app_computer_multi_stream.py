@@ -18,8 +18,8 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
-    "2.0-exp(gemini-exp-1206)": "gemini-exp-1206",
     "2.0-flash-exp(gemini-2.0-flash-exp)": "gemini-2.0-flash-exp",
+    "2.0-exp(gemini-exp-1206)": "gemini-exp-1206",
     "2.0-thinking-exp(gemini-2.0-flash-thinking-exp)": "gemini-2.0-flash-thinking-exp",
     "1.5-pro": "gemini-1.5-pro-latest",
     "1.5-flash": "gemini-1.5-flash-latest",
@@ -30,7 +30,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "你好。我可以帮助你吗？"}]
 
 # 设置默认系统提示词
-SYSTEM_PROMPT = """你是一个AI助手。请使用中文回答问题。"""
+SYSTEM_PROMPT = """你是一个AI聊天助手。请使用中文回答用户问题。"""
 
 # 页面标题
 st.title("Gemini AI 聊天助手")
@@ -147,14 +147,6 @@ if user_input:
                     max_output_tokens=max_tokens,
                 )
 
-                # 构建历史消息
-                chat = model.start_chat(history=[])
-                # 首先发送系统提示词
-                chat.send_message(SYSTEM_PROMPT)
-                # 然后发送历史消息
-                for message in st.session_state.messages[:-1]:  # 不包含最新的用户消息
-                    chat.send_message(message["content"])
-
                 # 处理普通对话模式
                 if not translate_enabled and not image:
                     prompt_prefix = ""
@@ -174,11 +166,18 @@ if user_input:
                     history_messages = []
                     for msg in st.session_state.messages[:-1]:  # 不包含最新的用户消息
                         history_messages.append({"role": msg["role"], "parts": [msg["content"]]})
-                    
+
+                    # 添加系统提示词到历史消息开头
+                    full_messages = [
+                        {"role": "user", "parts": [SYSTEM_PROMPT]},
+                        *history_messages,
+                        {"role": "user", "parts": [prompt_prefix + user_input]}
+                    ]
+
                     try:
                         if stream_enabled:
                             response = model.generate_content(
-                                prompt_prefix + user_input,
+                                full_messages,
                                 generation_config=generation_config,
                                 stream=True
                             )
