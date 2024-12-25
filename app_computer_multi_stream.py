@@ -165,7 +165,8 @@ if user_input:
                     # 构建完整的对话历史
                     history_messages = []
                     for msg in st.session_state.messages[:-1]:  # 不包含最新的用户消息
-                        history_messages.append({"role": msg["role"], "parts": [msg["content"]]})
+                        role = "model" if msg["role"] == "assistant" else msg["role"]  # 将 assistant 转换为 model
+                        history_messages.append({"role": role, "parts": [msg["content"]]})
 
                     # 添加系统提示词到历史消息开头
                     full_messages = [
