@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import google.generativeai as genai
+from google.generativeai.types import GenerateContentResponse
 from PIL import Image
 
 # 配置页面
