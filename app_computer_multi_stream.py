@@ -101,13 +101,19 @@ def handle_streaming_response(response_iter):
     
     try:
         for chunk in response_iter:
-            # 只处理文本内容
-            if hasattr(chunk, 'text'):
-                full_response += chunk.text
-            elif hasattr(chunk, 'parts'):
-                for part in chunk.parts:
-                    if hasattr(part, 'text'):
-                        full_response += part.text
+            if isinstance(chunk, GenerateContentResponse):
+                # 处理多部分内容
+                if hasattr(chunk, 'candidates') and chunk.candidates:
+                    for candidate in chunk.candidates:
+                        if hasattr(candidate, 'content') and candidate.content:
+                            for part in candidate.content.parts:
+                                if hasattr(part, 'text'):
+                                    full_response += part.text
+            elif isinstance(chunk, str):
+                full_response += chunk
+            else:
+                st.warning(f"未知类型的chunk: {type(chunk)}")
+                continue
             
             # 更新显示
             message_placeholder.markdown(full_response + "▌")
