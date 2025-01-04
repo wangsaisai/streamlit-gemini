@@ -8,6 +8,7 @@
 - 🤖 支持多种模型选择 (`gemini-1.5`, `gemini-2.0-exp`, `gemini-2.0-thinking-exp`)
 - 📝 支持流式输出回复
 - 🖼️ 支持图片上传和分析
+- 🔍 支持 Google 搜索功能，对话时可获取最新的知识
 - 🚀 简单易用的 Web 界面
 - 💻 基于 Streamlit 快速部署
 
@@ -16,7 +17,7 @@
 1. 获取 Google Gemini API Key
 2. 安装必要的依赖包：
 ```python
-pip install streamlit google-generativeai pillow
+pip install streamlit google-generativeai google-genai pillow
 ```
 
 ## 使用方法
@@ -50,6 +51,9 @@ streamlit run --server.port 8080 app.py
 
 #### 效果图:
 
+search.py展示
+![search.py展示1](search-display1.png)
+![search.py展示2](search-display2.png)
 app_computer_multi_stream.pu展示
 ![最新界面展示](app_computer_multi_stream-display.png)
 app.py展示
