@@ -54,7 +54,7 @@ streamlit run --server.port 8080 app.py
 search.py展示
 ![search.py展示1](search-display1.png)
 ![search.py展示2](search-display2.png)
-app_computer_multi_stream.pu展示
+app_computer_multi_stream.py展示
 ![最新界面展示](app_computer_multi_stream-display.png)
 app.py展示
 ![app.py展示](app-display.png)
