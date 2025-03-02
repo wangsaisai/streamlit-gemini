@@ -19,9 +19,9 @@ client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
-    "2.0-flash-exp(gemini-2.0-flash-exp)": "gemini-2.0-flash-exp",
-    "2.0-exp(gemini-exp-1206)": "gemini-exp-1206",
-    "2.0-thinking-exp(gemini-2.0-flash-thinking-exp)": "gemini-2.0-flash-thinking-exp",
+    "2.0-flash(gemini-2.0-flash)": "gemini-2.0-flash",
+    "2.0-exp(gemini-2.0-pro-exp-02-05)": "gemini-2.0-pro-exp-02-05",
+    "2.0-thinking-exp(gemini-2.0-flash-thinking-exp-01-21)": "gemini-2.0-flash-thinking-exp-01-21",
     "1.5-pro": "gemini-1.5-pro-latest",
     "1.5-flash": "gemini-1.5-flash-latest",
 }
@@ -73,7 +73,7 @@ with st.sidebar:
     translate_enabled = st.checkbox("翻译模式", help="中英文互译")
     computer_expert = st.checkbox("计算机专家模式", help="使用计算机专家角色进行回答")
     careful_check = st.checkbox("仔细检查", help="更仔细地检查和验证回答")
-    search_enabled = st.checkbox("启用搜索工具", value=True, help="使用Google搜索增强回答能力, 仅gemini-2.0-flash-exp支持")
+    search_enabled = st.checkbox("启用搜索工具", value=True, help="使用Google搜索增强回答能力, 仅gemini-2.0-flash支持")
 
     st.divider()
     
@@ -201,7 +201,7 @@ if user_input:
 
                 if search_enabled:
                     response = client.models.generate_content(
-                        model='gemini-2.0-flash-exp',
+                        model='gemini-2.0-flash',
                         contents=messages,
                         config=generation_config,
                     )
