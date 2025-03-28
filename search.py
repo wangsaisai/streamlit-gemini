@@ -19,8 +19,8 @@ client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
+    "2.5-exp(gemini-2.5-pro-exp-03-25)": "gemini-2.5-pro-exp-03-25",
     "2.0-flash(gemini-2.0-flash)": "gemini-2.0-flash",
-    "2.0-exp(gemini-2.0-pro-exp-02-05)": "gemini-2.0-pro-exp-02-05",
     "2.0-thinking-exp(gemini-2.0-flash-thinking-exp-01-21)": "gemini-2.0-flash-thinking-exp-01-21",
     "1.5-pro": "gemini-1.5-pro-latest",
     "1.5-flash": "gemini-1.5-flash-latest",
