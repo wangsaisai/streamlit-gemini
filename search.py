@@ -53,7 +53,7 @@ with st.sidebar:
         "温度 (Temperature)",
         min_value=0.0,
         max_value=1.0,
-        value=0.3,
+        value=0.1,
         step=0.1,
         help="较高的值会使输出更加随机，较低的值会使其更加集中和确定"
     )
@@ -62,7 +62,7 @@ with st.sidebar:
         "最大 Token 数量",
         min_value=128,
         max_value=8192,
-        value=2048,
+        value=8192,
         help="生成文本的最大长度"
     )
 
@@ -73,7 +73,7 @@ with st.sidebar:
     translate_enabled = st.checkbox("翻译模式", help="中英文互译")
     computer_expert = st.checkbox("计算机专家模式", help="使用计算机专家角色进行回答")
     careful_check = st.checkbox("仔细检查", help="更仔细地检查和验证回答")
-    search_enabled = st.checkbox("启用搜索工具", value=True, help="使用Google搜索增强回答能力, 仅gemini-2.0-flash支持")
+    search_enabled = st.checkbox("启用搜索工具", value=False, help="使用Google搜索增强回答能力")
 
     st.divider()
     
@@ -201,7 +201,7 @@ if user_input:
 
                 if search_enabled:
                     response = client.models.generate_content(
-                        model='gemini-2.0-flash',
+                        model=MODEL_OPTIONS[selected_model],
                         contents=messages,
                         config=generation_config,
                     )
