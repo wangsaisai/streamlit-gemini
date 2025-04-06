@@ -1,8 +1,16 @@
 import os
 import streamlit as st
+import logging
 from google import genai
 from google.genai.types import Tool, GenerateContentConfig, GoogleSearch, GenerateContentResponse
 from PIL import Image
+
+# 配置日志记录器
+logging.basicConfig(
+    filename='chat_log.txt',  # 日志文件名
+    level=logging.INFO,  # 日志级别
+    format='%(asctime)s - %(levelname)s - %(message)s'  # 日志格式
+)
 
 # 配置页面
 st.set_page_config(
@@ -19,6 +27,7 @@ client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
+    "2.5-preview": "gemini-2.5-pro-preview-03-25",
     "2.5-exp(gemini-2.5-pro-exp-03-25)": "gemini-2.5-pro-exp-03-25",
     "2.0-flash(gemini-2.0-flash)": "gemini-2.0-flash",
     "2.0-thinking-exp(gemini-2.0-flash-thinking-exp-01-21)": "gemini-2.0-flash-thinking-exp-01-21",
@@ -140,6 +149,8 @@ def handle_normal_response(response):
 user_input = st.chat_input("Your Question")
 
 if user_input:
+    # 记录用户输入
+    logging.info(f"\n\n\nUser: {user_input}\n")
     # 添加用户消息到历史记录
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
@@ -288,6 +299,8 @@ if user_input:
                 # 保存响应到会话状态
                 if response_text:
                     st.session_state.messages.append({"role": "assistant", "content": response_text})
+                    # 记录助手响应
+                    logging.info(f"Assistant: {response_text}")
                     if not stream_enabled or search_enabled:  # 如果不是流式输出，需要显示响应
                         st.markdown(response_text)
                 else:
