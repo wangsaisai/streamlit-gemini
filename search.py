@@ -27,7 +27,7 @@ client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
-    "2.5-preview": "gemini-2.5-pro-preview-03-25",
+    "2.5-preview(gemini-2.5-pro-preview-03-25)": "gemini-2.5-pro-preview-03-25",
     "2.5-exp(gemini-2.5-pro-exp-03-25)": "gemini-2.5-pro-exp-03-25",
     "2.0-flash(gemini-2.0-flash)": "gemini-2.0-flash",
     "2.0-thinking-exp(gemini-2.0-flash-thinking-exp-01-21)": "gemini-2.0-flash-thinking-exp-01-21",
@@ -100,6 +100,7 @@ with st.sidebar:
     if st.button("清除聊天历史"):
         st.session_state.messages.clear()
         st.session_state["messages"] = [{"role": "assistant", "content": "你好。我可以帮助你吗？"}]
+        st.session_state.prompt_used = False
 
 # 显示聊天历史
 for message in st.session_state.messages:
