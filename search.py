@@ -27,12 +27,11 @@ client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # 初始化 Gemini-Pro 模型
 MODEL_OPTIONS = {
-    "2.5-preview(gemini-2.5-pro-preview-03-25)": "gemini-2.5-pro-preview-03-25",
-    "2.5-exp(gemini-2.5-pro-exp-03-25)": "gemini-2.5-pro-exp-03-25",
-    "2.0-flash(gemini-2.0-flash)": "gemini-2.0-flash",
-    "2.0-thinking-exp(gemini-2.0-flash-thinking-exp-01-21)": "gemini-2.0-flash-thinking-exp-01-21",
-    "1.5-pro": "gemini-1.5-pro-latest",
-    "1.5-flash": "gemini-1.5-flash-latest",
+    "2.5-flash-preview": "gemini-2.5-flash-preview-04-17"
+    "2.5-preview": "gemini-2.5-pro-preview-03-25",
+    "2.5-exp": "gemini-2.5-pro-exp-03-25",
+    "2.0-flash": "gemini-2.0-flash",
+    "2.0-thinking-exp": "gemini-2.0-flash-thinking-exp-01-21",
 }
 
 # 初始化会话状态
@@ -168,6 +167,9 @@ if user_input:
                 google_search_tool = Tool(
                     google_search = GoogleSearch()
                 )
+
+                if book_mode:
+                    max_tokens *= 2
 
                 generation_config = genai.types.GenerateContentConfig(
                     tools=[google_search_tool] if search_enabled else None,
