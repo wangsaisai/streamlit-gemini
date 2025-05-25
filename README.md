@@ -50,7 +50,8 @@ streamlit run --server.port 8080 app.py
 3. 在浏览器中打开显示的地址（默认为 http://localhost:8501 ）
 
 #### 效果图:
-
+image.py展示
+![image.py展示1](image-display.png)
 search.py展示
 ![search.py展示1](search-display1.png)
 ![search.py展示2](search-display2.png)
