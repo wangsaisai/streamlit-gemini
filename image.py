@@ -55,9 +55,9 @@ USAGE_INSTRUCTIONS = """
 """
 
 # Configuration
-LOG_FILE = "content_generation.log" # Renamed for broader scope
+LOG_FILE = "generation.log"
 IMAGE_OUTPUT_DIR = "generated_images"
-VIDEO_OUTPUT_DIR = "generated_videos" # Added for video
+VIDEO_OUTPUT_DIR = "generated_videos"
 
 
 # --- Logging Setup ---
@@ -265,7 +265,7 @@ def generate_video_from_prompt(prompt_text: str, api_key: str):
             for i, generated_video_obj in enumerate(operation.response.generated_videos):
                 try:
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    video_filename = f"video_{timestamp}_{i}.mp4"
+                    video_filename = f"{VIDEO_OUTPUT_DIR}/video_{timestamp}_{i}.mp4"
 
                     client.files.download(file=generated_video_obj.video)
                     generated_video_obj.video.save(video_filename)
