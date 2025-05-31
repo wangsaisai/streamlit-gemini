@@ -259,7 +259,7 @@ def generate_video_from_prompt(prompt_text: str, api_key: str):
             # Polling loop
             while not operation.done:
                 time.sleep(20) # Poll every 20 seconds
-                operation = client.operations.get(name=operation.operation.name) # Refresh operation status
+                operation = client.operations.get(operation) # Refresh operation status
                 # Try to get progress if available in metadata
                 if operation.metadata and hasattr(operation.metadata, 'progress_percentage'):
                      progress_bar.progress(int(operation.metadata.progress_percentage))
