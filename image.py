@@ -254,30 +254,20 @@ def generate_video_from_prompt(prompt_text: str, api_key: str):
                 ),
             )
             
-            st.info("视频生成任务已提交，正在处理中... 您可以在下方看到进度更新。")
-            progress_bar = st.progress(0)
+            st.info("视频生成任务已提交，正在处理中...")
             # Polling loop
             while not operation.done:
                 time.sleep(20) # Poll every 20 seconds
                 operation = client.operations.get(operation) # Refresh operation status
-                # Try to get progress if available in metadata
-                if operation.metadata and hasattr(operation.metadata, 'progress_percentage'):
-                     progress_bar.progress(int(operation.metadata.progress_percentage))
-                elif operation.metadata and hasattr(operation.metadata, 'state_description'):
-                     st.info(f"更新: {operation.metadata.state_description}")
-
-
-            progress_bar.progress(100) # Mark as complete
 
         if operation.response and operation.response.generated_videos:
             st.success(f"🎉 成功生成 {len(operation.response.generated_videos)} 个视频！")
             for i, generated_video_obj in enumerate(operation.response.generated_videos):
                 try:
-                    video_file_resource = generated_video_obj.video # This is a File object
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    video_filename = f"{VIDEO_OUTPUT_DIR}/video_{timestamp}_{i}.mp4"
+                    video_filename = f"video_{timestamp}_{i}.mp4"
 
-                    client.files.download(file=video_file_resource)
+                    client.files.download(file=generated_video_obj.video)
                     generated_video_obj.video.save(video_filename)
                     logging.info(f"Saved video: {video_filename}")
 
