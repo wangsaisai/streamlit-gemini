@@ -276,10 +276,9 @@ def generate_video_from_prompt(prompt_text: str, api_key: str):
                     video_file_resource = generated_video_obj.video # This is a File object
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                     video_filename = f"{VIDEO_OUTPUT_DIR}/video_{timestamp}_{i}.mp4"
-                    
-                    # Download the video file
-                    # The File object itself doesn't have a .save(). We use genai.download_file()
-                    genai_client.download_file(video_file_resource.name, video_filename)
+
+                    client.files.download(file=video_file_resource)
+                    generated_video_obj.video.save(video_filename)
                     logging.info(f"Saved video: {video_filename}")
 
                     st.video(video_filename)
