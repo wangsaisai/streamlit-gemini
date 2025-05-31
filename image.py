@@ -229,19 +229,25 @@ prompt = st.text_area(prompt_label, default_prompt, height=150, key="main_prompt
 
 
 # Image count configuration - only for text-to-image
-num_images_to_generate = 1 # Default
+num_images_to_generate = 4 # Default for text-to-image, will be overridden by user input if mode matches
 if generation_mode == "文生图 (Text-to-Image)":
-    num_images_to_generate = st.sidebar.number_input("生成图片数量:", min_value=1, max_value=10, value=2, step=1, key="num_images_input")
+    num_images_to_generate = st.sidebar.number_input("生成图片数量:", min_value=1, max_value=10, value=4, step=1, key="num_images_input")
+else: # For image-to-image, we don't need this input, but keep a default for the variable
+    num_images_to_generate = 1
 
 
 # Generate Button
 generate_button_label = "✨ 生成图片"
 if generation_mode == "图生图 (Image-to-Image)":
     generate_button_label = "🎨 编辑图片"
-    
-generate_button = st.sidebar.button(generate_button_label, use_container_width=True, disabled=not api_key)
+
+# Button moved below the text area
+# generate_button = st.sidebar.button(generate_button_label, use_container_width=True, disabled=not api_key)
 
 st.markdown("---") # Main area separator
+
+# Generate Button (moved here)
+generate_button = st.button(generate_button_label, use_container_width=True, disabled=not api_key, key="main_generate_button")
 
 # Main logic when generate button is clicked
 if generate_button:
