@@ -56,22 +56,29 @@ def configure_sidebar():
         )
         current_model_name = MODEL_OPTIONS[selected_model_key]
 
-        temperature = st.slider(
-            "温度 (Temperature)", 0.0, 1.0, 0.1, 0.1,
-            help="较高的值会使输出更加随机，较低的值会使其更加集中和确定"
-        )
-        max_tokens = st.number_input(
-            "最大 Token 数量", 128, 8192, 8192,
-            help="生成文本的最大长度"
-        )
+        with st.expander("高级参数设置", expanded=False):
+            temperature = st.slider(
+                "温度 (Temperature)", 0.0, 1.0, 0.1, 0.1,
+                help="较高的值会使输出更加随机，较低的值会使其更加集中和确定"
+            )
+            max_tokens = st.number_input(
+                "最大 Token 数量", 128, 8192, 8192,
+                help="生成文本的最大长度"
+            )
         st.divider()
+
+        st.subheader("输出与搜索设置")
         stream_enabled = st.checkbox("流式输出", value=True, help="开启后将实时显示AI响应")
+        search_enabled = st.checkbox("启用搜索工具", value=True, help="使用Google搜索增强回答能力")
+        st.divider()
+
+        st.subheader("模式选择")
         translate_enabled = st.checkbox("翻译模式", help="中英文互译")
         computer_expert = st.checkbox("计算机专家模式", help="使用计算机专家角色进行回答")
         book_mode = st.checkbox("书籍模式", help="深入理解一本书")
         careful_check = st.checkbox("仔细检查", help="更仔细地检查和验证回答")
-        search_enabled = st.checkbox("启用搜索工具", value=False, help="使用Google搜索增强回答能力")
         st.divider()
+
         upload_image_file = st.file_uploader("在此上传您的图片", accept_multiple_files=False, type=['jpg', 'png'])
         image = Image.open(upload_image_file) if upload_image_file else None
         st.divider()
