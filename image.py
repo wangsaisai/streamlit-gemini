@@ -272,11 +272,10 @@ def generate_video_from_prompt(prompt_text: str, api_key: str):
                     logging.info(f"Saved video: {video_filename}")
 
                     st.video(video_filename)
-                    st.caption(f"视频 {i+1} (已保存至 {video_filename})")
 
                 except Exception as vid_err:
                     st.error(f"处理或保存视频 {i+1} 时出错: {vid_err}")
-                    logging.error(f"Error processing/saving video {i+1} (name: {video_file_resource.name if 'video_file_resource' in locals() else 'unknown'}): {vid_err}")
+                    logging.error(f"Error processing/saving video {i+1}: {vid_err}")
         else:
             st.warning("⚠️ 未能生成视频。可能是提示词不当、模型配置问题、API 权限不足，或响应结构不符合预期。")
             st.warning(f"使用的 Prompt: {prompt_text}")
