@@ -249,7 +249,7 @@ def generate_video_from_prompt(prompt_text: str, api_key: str):
                 model=VIDEO_MODEL_NAME,
                 prompt=prompt_text,
                 config=genai_client_types.GenerateVideosConfig(
-                    person_generation="dont_allow",  # "dont_allow" or "allow_adult"
+                    person_generation="allow_all",  # "dont_allow" or "allow_adult"
                     aspect_ratio="16:9",  # "16:9" or "9:16"
                 ),
             )
