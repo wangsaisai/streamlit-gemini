@@ -51,16 +51,16 @@ streamlit run --server.port 8080 app.py
 
 #### 效果图:
 image.py展示 (体验地址：http://34.125.51.214:8086/)
-![image.py展示1](image-display.png)
+![image.py展示1](images/image-display.png)
 search.py展示
-![search.py展示1](search-display1.png)
-![search.py展示2](search-display2.png)
+![search.py展示1](images/search-display1.png)
+![search.py展示2](images/search-display2.png)
 app_computer_multi_stream.py展示
-![最新界面展示](app_computer_multi_stream-display.png)
+![最新界面展示](images/app_computer_multi_stream-display.png)
 app.py展示
-![app.py展示](app-display.png)
+![app.py展示](images/app-display.png)
 app2.py展示
-![app2.py展示](app2-display.png)
+![app2.py展示](images/app2-display.png)
 
 4. 体验地址
 http://34.125.51.214:8082/ （免费，无广告，无需注册登录等）
