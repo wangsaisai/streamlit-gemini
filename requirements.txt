@@ -1,5 +1,6 @@
-langdetect==1.0.9
-Pillow==11.2.1
-protobuf==6.31.1
-streamlit==1.45.1
+langdetect
+Pillow
+protobuf
+streamlit
 google-generativeai
+google-genai
