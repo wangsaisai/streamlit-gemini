@@ -39,6 +39,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "你好。我可以帮助你吗？"}]
 if "prompt_used" not in st.session_state:
     st.session_state.prompt_used = False
+if "uploaded_image" not in st.session_state:
+    st.session_state.uploaded_image = None
 
 # 页面标题
 st.title("Gemini AI 聊天助手")
@@ -80,12 +82,23 @@ def configure_sidebar():
         st.divider()
 
         upload_image_file = st.file_uploader("在此上传您的图片", accept_multiple_files=False, type=['jpg', 'png'])
-        image = Image.open(upload_image_file) if upload_image_file else None
+        if upload_image_file:
+            st.session_state.uploaded_image = Image.open(upload_image_file)
+        elif st.session_state.uploaded_image is not None:
+            # 如果会话状态中有图片，显示一个提示
+            st.info("已上传图片，将在聊天中使用")
+        image = st.session_state.uploaded_image
         st.divider()
         if st.button("清除聊天历史"):
             st.session_state.messages = [{"role": "assistant", "content": "你好。我可以帮助你吗？"}]
             st.session_state.prompt_used = False
+            st.session_state.uploaded_image = None
             st.rerun()
+        
+        if st.session_state.uploaded_image is not None:
+            if st.button("清除图片"):
+                st.session_state.uploaded_image = None
+                st.rerun()
 
     return (current_model_name, temperature, max_tokens, stream_enabled,
             translate_enabled, computer_expert, book_mode, careful_check,
@@ -215,7 +228,7 @@ def generate_translation_response(client_instance, model_name, user_text, gen_co
 
 def generate_image_response(client_instance, model_name, user_text, image_data, gen_config, stream_enabled_flag):
     """Generates a response for image-based input."""
-    st.image(image_data, caption="上传的图片", use_column_width=True)
+    st.image(image_data, caption="上传的图片", use_container_width=True)
     contents = [user_text, image_data]
     if stream_enabled_flag:
         return handle_streaming_response(
@@ -266,17 +279,17 @@ if user_input:
                 )
                 
                 response_text = None
-                if search_enabled_opt:
+                if image_data_opt:
+                    response_text = generate_image_response(
+                        client, current_model, user_input, image_data_opt, generation_config_obj, stream_enabled_opt
+                    )
+                elif search_enabled_opt:
                     response_text = generate_response_with_search(
                         client, current_model, gemini_messages, generation_config_obj
                     )
                 elif translate_enabled_opt:
                     response_text = generate_translation_response(
                         client, current_model, user_input, generation_config_obj, stream_enabled_opt
-                    )
-                elif image_data_opt:
-                    response_text = generate_image_response(
-                        client, current_model, user_input, image_data_opt, generation_config_obj, stream_enabled_opt
                     )
                 else: # Standard chat
                     response_text = generate_standard_response(
