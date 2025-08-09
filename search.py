@@ -41,6 +41,8 @@ if "prompt_used" not in st.session_state:
     st.session_state.prompt_used = False
 if "uploaded_image" not in st.session_state:
     st.session_state.uploaded_image = None
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
 
 # 页面标题
 st.title("Gemini AI 聊天助手")
@@ -81,24 +83,33 @@ def configure_sidebar():
         careful_check = st.checkbox("仔细检查", help="更仔细地检查和验证回答")
         st.divider()
 
-        upload_image_file = st.file_uploader("在此上传您的图片", accept_multiple_files=False, type=['jpg', 'png'])
-        if upload_image_file:
+        # Use a dynamic key to allow programmatic clearing of the uploader
+        upload_image_file = st.file_uploader(
+            "在此上传您的图片",
+            accept_multiple_files=False,
+            type=['jpg', 'png'],
+            key=f"file_uploader_{st.session_state.uploader_key}"
+        )
+
+        # Synchronize the PIL image object with the file uploader's state
+        if upload_image_file is None:
+            st.session_state.uploaded_image = None
+        else:
             st.session_state.uploaded_image = Image.open(upload_image_file)
-        elif st.session_state.uploaded_image is not None:
-            # 如果会话状态中有图片，显示一个提示
-            st.info("已上传图片，将在聊天中使用")
-        image = st.session_state.uploaded_image
+
+        image = st.session_state.get("uploaded_image")
+
+        if image and upload_image_file:
+            st.info(f"已上传图片: {upload_image_file.name}，将在聊天中使用")
+
         st.divider()
+
         if st.button("清除聊天历史"):
             st.session_state.messages = [{"role": "assistant", "content": "你好。我可以帮助你吗？"}]
             st.session_state.prompt_used = False
             st.session_state.uploaded_image = None
+            st.session_state.uploader_key += 1  # Increment key to reset file uploader
             st.rerun()
-        
-        if st.session_state.uploaded_image is not None:
-            if st.button("清除图片"):
-                st.session_state.uploaded_image = None
-                st.rerun()
 
     return (current_model_name, temperature, max_tokens, stream_enabled,
             translate_enabled, computer_expert, book_mode, careful_check,
