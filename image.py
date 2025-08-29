@@ -16,9 +16,9 @@ from langdetect import detect, LangDetectException
 
 # --- Constants ---
 # API Models
-TRANSLATION_MODEL_NAME = "gemini-2.0-flash"
-IMAGE_TO_IMAGE_MODEL_NAME = "gemini-2.0-flash-preview-image-generation"
-TEXT_TO_IMAGE_MODEL_NAME = 'imagen-4.0-generate-preview-06-06'
+TRANSLATION_MODEL_NAME = "gemini-2.5-flash"
+IMAGE_TO_IMAGE_MODEL_NAME = "gemini-2.5-flash-image-preview"
+TEXT_TO_IMAGE_MODEL_NAME = 'imagen-4.0-generate-001'
 VIDEO_MODEL_NAME = "veo-3.0-generate-preview" # Added for video generation
 
 # UI Texts
